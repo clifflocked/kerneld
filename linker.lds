@@ -7,6 +7,8 @@ PHDRS {
     data PT_LOAD FLAGS(6);
 }
 
+PROVIDE(__kernel_start$ = .);
+
 SECTIONS {
     .text : {
         *(.init);
