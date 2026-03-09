@@ -1,5 +1,7 @@
 #include "pages.h"
 
+#include <logging.h>
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -69,6 +71,7 @@ void pagemap_init(size_t memsize) {
     used_memory = (size_t)((uint8_t *)&__kernel_end$ - &__kernel_start$);
     free_memory = memsize - used_memory;
     mm_init(&__kernel_end$, &__kernel_end$ + (memsize>>14));
+    klog("Pagemap initialized.", "page_allocator");
 }
 
 void *newpage() {
