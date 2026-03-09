@@ -1,0 +1,24 @@
+ == kerneld ==
+A simple microkernel for the RISC-V architecture.
+
+The goals of this project:
+ 1. Have a novel way of dealing with drivers and IPC in userspace
+ 2. Be small. I hope to have a complete kernel in less than 64K
+ 3. Learn more about the RISC-V architecture
+ 4. Be able to effectively use the changes implemented in C23.
+
+Contributions are welcome, but any LLM-assisted programming is
+absolutely not.
+
+My hope is to implement only a couple of syscalls as a base:
+ 1. `read`, `write`, `open`, `close`, `exit` - standard UNIX
+ 2. `share` - Creates a shared page (optionally megapage) between two processes
+ 3. I'm sure I'll find more later.
+
+I want to minimize how much code is run in kernelspace as possible. I will see
+how well that works out ;)
+
+ -- Further reading --
+1. The RISC-V Architecture: https://docs.riscv.org/reference/isa/unpriv/unpriv-index.html
+2. The C Programming Language: https://www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/C_Book_2nd.pdf
+3. MSDOS 1.25: https://github.com/microsoft/MS-DOS/tree/main/v1.25
