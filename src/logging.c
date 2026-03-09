@@ -42,7 +42,7 @@ void logging_init() {
 }
 
 void klog(char *msg, char *service) {
-    puts(time_to_str(time()));
+    puts(time_to_str(time() - starttime));
     sbi_console_putchar(' ');
     puts(service);
     puts(": ");
