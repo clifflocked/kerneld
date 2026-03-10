@@ -1,8 +1,14 @@
 #include <logging.h>
+
+#include <stdarg.h>
+#include <stddef.h>
+
 #include <sbi.h>
 
+#define putchar(c) sbi_console_putchar(c)
+
 static int puts(const char *s) {
-    while (*s) sbi_console_putchar(*s++);
+    while (*s) putchar(*s++);
     return 0;
 }
 
@@ -38,14 +44,61 @@ static inline time64_t time() {
 
 void logging_init() {
     starttime = time();
-    klog("Logging started.", "logging");
+    klog("Logging started.");
 }
 
-void klog(char *msg, char *service) {
+static void service_wrapper(char *service) {
     puts(time_to_str(time() - starttime));
-    sbi_console_putchar(' ');
+    putchar(' ');
     puts(service);
     puts(": ");
+}
+
+void klog_service(char *msg, char *service) {
+    service_wrapper(service);
     puts(msg);
-    sbi_console_putchar('\n');
+    putchar('\n');
+}
+
+void klogf_service(char *msg, char *service, ...) {
+    va_list args;
+    size_t i = 0;
+    bool last_was_percent = false;
+
+    service_wrapper(service);
+
+    va_start(args, service);
+
+    while (true) {
+        if (msg[i] == '\0') goto end;
+        else if (!last_was_percent)
+            putchar(msg[i]);
+        else switch (msg[i]) {
+            case 'c':
+                int i = va_arg(args, int);
+                putchar(i);
+                break;
+            case 's':
+                char *s = va_arg(args, char *);
+                while (*s) putchar(*s++);
+                break;
+            case 'h':
+                uint64_t n = va_arg(args, unsigned long);
+                char buf[16];
+                char *chars = "0123456789abcdef";
+                for (int i = 15; i >= 0; i--) {
+                    buf[i] = chars[n%16];
+                    n >>= 4;
+                }
+                for (int i = 0; i < 16; i++) putchar(buf[i]);
+                break;
+            default:
+                puts("klogf failed.");
+        }
+
+        i++;
+    }
+
+end:
+    return;
 }

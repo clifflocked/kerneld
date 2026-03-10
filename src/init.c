@@ -13,9 +13,9 @@ void init() {
 
     char *page = newpage();
     memcpy(page, "Hello, world!\n", 15);
-    klog(page, "init");
+    klog(page);
     freepage(page);
 
-    klog("Shutting down!", "poweroff");
+    klog("Shutting down!");
     sbi_shutdown();
 }
