@@ -12,14 +12,14 @@ static void *bitfield_end;
 static size_t bitfield_size;
 
 static inline int ffsb(uint64_t num) {
-    return __builtin_clz(num);
+    return __builtin_clzll(num);
 }
 
 void pagemap_init(size_t memsize, void *memstart) {
     bitfield = (uint64_t *)&__kernel_end$;
     size_t rsvsize = (size_t)((uintptr_t)&__kernel_end$ - (uintptr_t)memstart);
     size_t free = memsize - rsvsize;
-    size_t bitfield_size = free / BYTES_PER_U64;
+     bitfield_size = free / BYTES_PER_U64;
 
     memset(bitfield, 0, bitfield_size * 8);
 
