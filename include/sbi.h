@@ -1,9 +1,9 @@
 #ifndef _SBI_H
 #define _SBI_H
 
-struct sbiret  {
+struct sbiret {
     long error;
-    long value
+    long value;
 };
 
 struct sbiret sbi_ecall(long a0, long a1, long a2,

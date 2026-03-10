@@ -7,7 +7,7 @@ INCFLAGS := -I include/ -nostdinc
 CC       := gcc
 CFLAGS   := $(INCFLAGS) -mcmodel=medany -fasm \
 			-march=rv64imafdch_sstc_zicntr_zihpm_zicboz_zicbom_zbb -mabi=lp64d \
-			-nostdlib -std=c23 -Wall -Wextra -Werror -pedantic -Os
+			-nostdlib -std=c23 -Wall -Wextra -Werror -pedantic -Os -ggdb
 LDFLAGS  := -nostdlib -T linker.lds
 
 EMU      := qemu-system-riscv64
@@ -41,3 +41,8 @@ clean:
 run: $(OUTPUT)
 	@echo " QEMU $(OUTPUT)"
 	@$(EMU) $(EMUFLAGS) -kernel $(OUTPUT)
+
+debug-run: $(OUTPUT)
+	@echo " QEMU $(OUTPUT)"
+	@$(EMU) -s -S $(EMUFLAGS) -kernel $(OUTPUT) &
+	@$(CROSS_COMPILE)gdb -iex "target remote localhost:1234"
