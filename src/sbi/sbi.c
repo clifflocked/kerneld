@@ -1,4 +1,4 @@
-#include "ecall.h"
+#include <sbi.h>
 
 #define CONSOLE_PUTCHAR 0x1
 #define SYSTEM_SHUTDOWN 0x8

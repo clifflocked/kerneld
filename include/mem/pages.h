@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-void pagemap_init(size_t memsize);
+void pagemap_init(size_t memsize, void *memstart);
 
 void *newpage();
 void *megapage();

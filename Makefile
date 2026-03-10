@@ -11,7 +11,7 @@ CFLAGS   := $(INCFLAGS) -mcmodel=medany -fasm \
 LDFLAGS  := -nostdlib -T linker.lds
 
 EMU      := qemu-system-riscv64
-EMUFLAGS := -machine virt -serial stdio
+EMUFLAGS := -machine virt -serial stdio -m 128M
 
 SRCFILES := $(shell sh -c "cd src/ && find * -type f")
 CFILES   := $(filter %.c,$(SRCFILES))
@@ -35,7 +35,7 @@ obj/%.S.o: src/%.S
 	@$(CROSS_COMPILE)as -c $< -o $@
 
 clean:
-	@echo "RM obj kerneld"
+	@echo " RM   obj kerneld"
 	@$(RM) -r obj/ kerneld
 
 run: $(OUTPUT)
